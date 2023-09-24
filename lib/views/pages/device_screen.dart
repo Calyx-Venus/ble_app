@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:ble_app/views/components/service_list.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
 import 'rpm.dart';
@@ -24,6 +25,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
     super.initState();
   }
 
+  final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
 //build ble service tiles----------------------
   // List<Widget> _buildServiceTiles(
   //     BuildContext context, List<BluetoothService> services) {
@@ -149,6 +151,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
     return numberStr;
   }
 
+//connect or disconnect from bluetooth based on case
   @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
@@ -247,7 +250,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       index: snapshot.data! ? 1 : 0,
                       children: <Widget>[
                         TextButton(
-                          child: const Text("Initialize for Run"),
+                          child: const Text(
+                              "Initialize for Run"), //discover services
                           onPressed: () async {
                             try {
                               await widget.device.discoverServices();
@@ -296,9 +300,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
                 stream: widget.device.services,
                 initialData: const [],
                 builder: (c, snapshot) {
-                  return Column(
-                    children: _buildServiceTiles(context, snapshot.data!),
-                  );
+                  return ServiceList(
+                      services: snapshot.data! as List<BluetoothService>);
                 },
               ),
             ],
@@ -308,6 +311,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
     );
   }
 
+//logic for connection/subscription to ble
   Stream<int> rssiStream(
       {Duration frequency = const Duration(seconds: 1)}) async* {
     var isConnected = true;
@@ -326,4 +330,24 @@ class _DeviceScreenState extends State<DeviceScreen> {
     // Device disconnected, stopping RSSI stream
     subscription.cancel();
   }
+}
+
+String prettyException(String prefix, dynamic e) {
+  if (e is FlutterBluePlusException) {
+    return "$prefix ${e.errorString}";
+  } else if (e is PlatformException) {
+    return "$prefix ${e.message}";
+  }
+  return e.toString();
+}
+
+List<int> _getRandomBytes() {
+  //needed
+  final math = Random();
+  return [
+    math.nextInt(255),
+    math.nextInt(255),
+    math.nextInt(255),
+    math.nextInt(255)
+  ];
 }

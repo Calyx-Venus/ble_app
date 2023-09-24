@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-
 import 'characteristic_tile.dart';
 
+//service
 class ServiceTile extends StatelessWidget {
-  ////service class/////
   final BluetoothService service;
   final List<CharacteristicTile> characteristicTiles;
 
