@@ -2,8 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:get/get.dart';
-import '../pages/rpm.dart';
 import 'characteristic_tile.dart';
 import 'descriptor_tile.dart';
 import 'service_tile.dart';
@@ -37,8 +35,8 @@ class ServiceList extends StatelessWidget {
                             }
                           } catch (e) {
                             final snackBar = SnackBar(
-                                content:
-                                    Text(prettyException("Read Error:", e)));
+                                content: Text(prettyException(
+                                    "Read Error:", e)));
                             snackBarKeyC.currentState?.showSnackBar(
                                 snackBar); //for debugging purposes
                           }
@@ -46,23 +44,26 @@ class ServiceList extends StatelessWidget {
                         //on Write Pressed 1 //sends number [3] which gives blue light
                         onWritePressed: () async {
                           try {
-                            await c.write([3], withoutResponse: false); //blue
+                            await c.write([3],
+                                withoutResponse: false); //blue
                             if (c.properties.read) {
                               await c.read();
-                              print('blue/////////');
+                              // print('blue/////////');
                               print(await c.read);
                             }
                           } catch (e) {
                             final snackBar = SnackBar(
-                                content:
-                                    Text(prettyException("Write Error:", e)));
-                            snackBarKeyC.currentState?.showSnackBar(snackBar);
+                                content: Text(prettyException(
+                                    "Write Error:", e)));
+                            snackBarKeyC.currentState
+                                ?.showSnackBar(snackBar);
                           }
                         },
                         //on Write Pressed 2 //sends number [2] which gives green light
                         onWritePressedTwo: () async {
                           try {
-                            await c.write([2], withoutResponse: false); //green
+                            await c.write([2],
+                                withoutResponse: false); //green
                             if (c.properties.read) {
                               await c.read();
                               print('green/////////');
@@ -70,15 +71,17 @@ class ServiceList extends StatelessWidget {
                             }
                           } catch (e) {
                             final snackBar = SnackBar(
-                                content:
-                                    Text(prettyException("Write Error", e)));
-                            snackBarKeyC.currentState?.showSnackBar(snackBar);
+                                content: Text(prettyException(
+                                    "Write Error", e)));
+                            snackBarKeyC.currentState
+                                ?.showSnackBar(snackBar);
                           }
                         },
                         //on write pressed red //sends number 1 for red
                         onWritePressedRed: () async {
                           try {
-                            await c.write([1], withoutResponse: false); //red
+                            await c.write([1],
+                                withoutResponse: false); //red
                             if (c.properties.read) {
                               await c.read();
                               print('red//////////');
@@ -86,9 +89,10 @@ class ServiceList extends StatelessWidget {
                             }
                           } catch (e) {
                             final snackBar = SnackBar(
-                                content:
-                                    Text(prettyException("Write Error", e)));
-                            snackBarKeyC.currentState?.showSnackBar(snackBar);
+                                content: Text(prettyException(
+                                    "Write Error", e)));
+                            snackBarKeyC.currentState
+                                ?.showSnackBar(snackBar);
                           }
                         },
 
@@ -106,8 +110,8 @@ class ServiceList extends StatelessWidget {
                                     await d.read();
                                   } catch (e) {
                                     final snackBar = SnackBar(
-                                        content: Text(
-                                            prettyException("Read Error:", e)));
+                                        content: Text(prettyException(
+                                            "Read Error:", e)));
                                     snackBarKeyC.currentState
                                         ?.showSnackBar(snackBar);
                                   }

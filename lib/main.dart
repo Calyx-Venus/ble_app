@@ -1,6 +1,5 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:ble_app/views/pages/device_screen.dart';
+import 'package:ble_app/views/components/service_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -8,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'views/pages/landing_page.dart';
-import 'widgets.dart';
 
 final snackBarKeyA = GlobalKey<ScaffoldMessengerState>();
 final snackBarKeyB = GlobalKey<ScaffoldMessengerState>();
@@ -55,7 +53,8 @@ class FlutterBlueApp extends StatelessWidget {
 
 ///if bluetoothAdapterState.off
 class BluetoothOffScreen extends StatelessWidget {
-  const BluetoothOffScreen({Key? key, this.adapterState}) : super(key: key);
+  const BluetoothOffScreen({Key? key, this.adapterState})
+      : super(key: key);
 
   final BluetoothAdapterState? adapterState;
 
@@ -81,7 +80,7 @@ class BluetoothOffScreen extends StatelessWidget {
                     .titleSmall
                     ?.copyWith(color: Colors.white),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -93,7 +92,8 @@ class BluetoothOffScreen extends StatelessWidget {
                     }
                   } catch (e) {
                     final snackBar = SnackBar(
-                        content: Text(prettyException("Error Turning On:", e)));
+                        content: Text(
+                            prettyException("Error Turning On:", e)));
                     snackBarKeyA.currentState?.showSnackBar(snackBar);
                   }
                 },

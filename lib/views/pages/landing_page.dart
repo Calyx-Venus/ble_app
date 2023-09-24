@@ -1,6 +1,8 @@
 //screen defining UI for landing page search
+import 'package:ble_app/views/components/service_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:get/get.dart';
 
 import '../../widgets.dart';
 import 'device_screen.dart';
@@ -32,31 +34,34 @@ class FindDevicesScreen extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   StreamBuilder<List<BluetoothDevice>>(
-                    stream: Stream.periodic(const Duration(seconds: 2))
-                        .asyncMap((_) => FlutterBluePlus.connectedDevices),
+                    stream:
+                        Stream.periodic(const Duration(seconds: 2))
+                            .asyncMap((_) =>
+                                FlutterBluePlus.connectedDevices),
                     initialData: const [],
                     builder: (c, snapshot) => Column(
                       children: snapshot.data!
                           .map((d) => ListTile(
                                 title: Text(d.localName),
                                 subtitle: Text(d.remoteId.toString()),
-                                trailing:
-                                    StreamBuilder<BluetoothConnectionState>(
+                                trailing: StreamBuilder<
+                                    BluetoothConnectionState>(
                                   stream: d.connectionState,
                                   initialData:
-                                      BluetoothConnectionState.disconnected,
+                                      BluetoothConnectionState
+                                          .disconnected,
                                   builder: (c, snapshot) {
                                     if (snapshot.data ==
-                                        BluetoothConnectionState.connected) {
+                                        BluetoothConnectionState
+                                            .connected) {
                                       return ElevatedButton(
-                                        child: const Text('OPEN'),
-                                        onPressed: () => Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DeviceScreen(device: d))),
-                                      );
+                                          child: const Text('OPEN'),
+                                          onPressed: () => Get.to(
+                                              () => DeviceScreen(),
+                                              arguments: d));
                                     }
-                                    return Text(snapshot.data.toString());
+                                    return Text(
+                                        snapshot.data.toString());
                                   },
                                 ),
                               ))
@@ -71,8 +76,9 @@ class FindDevicesScreen extends StatelessWidget {
                           .map(
                             (r) => ScanResultTile(
                               result: r,
-                              onTap: () => Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
+                              onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) {
                                 r.device.connect().catchError((e) {
                                   final snackBar = SnackBar(
                                       content: Text(prettyException(
@@ -80,7 +86,8 @@ class FindDevicesScreen extends StatelessWidget {
                                   snackBarKeyB.currentState
                                       ?.showSnackBar(snackBar);
                                 });
-                                return DeviceScreen(device: r.device);
+                                //! might need to pass device here in the future
+                                return DeviceScreen();
                               })),
                             ),
                           )
@@ -105,10 +112,10 @@ class FindDevicesScreen extends StatelessWidget {
                     FlutterBluePlus.stopScan();
                   } catch (e) {
                     final snackBar = SnackBar(
-                        content: Text(prettyException("Stop Scan Error:", e)));
+                        content: Text(
+                            prettyException("Stop Scan Error:", e)));
                     snackBarKeyB.currentState?.showSnackBar(snackBar);
                   }
-                  ;
                 },
                 backgroundColor: Colors.red,
               );
@@ -119,15 +126,15 @@ class FindDevicesScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('assets/minidyno.jpeg'),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Search for BlueTooth Device',
                       style: TextStyle(fontSize: 20),
                     ),
                     IconButton(
-                        icon: Icon(Icons.search),
+                        icon: const Icon(Icons.search),
                         iconSize: 100,
                         color: Colors.amber[400],
                         onPressed: () async {
@@ -137,9 +144,10 @@ class FindDevicesScreen extends StatelessWidget {
                                 androidUsesFineLocation: false);
                           } catch (e) {
                             final snackBar = SnackBar(
-                                content: Text(
-                                    prettyException("Start Scan Error:", e)));
-                            snackBarKeyB.currentState?.showSnackBar(snackBar);
+                                content: Text(prettyException(
+                                    "Start Scan Error:", e)));
+                            snackBarKeyB.currentState
+                                ?.showSnackBar(snackBar);
                           }
                         }),
                   ],
