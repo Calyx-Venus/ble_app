@@ -8,11 +8,11 @@ import 'package:get/get.dart';
 class RpmController extends GetxController {
   late final BluetoothDevice device;
   final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
-  RpmController({required this.c});
-  final BluetoothCharacteristic c;
+  // RpmController();
+  BluetoothCharacteristic? c;
   @override
   void onReady() {
-    startRun(c);
+    startRun(c!);
     super.onInit();
   }
 

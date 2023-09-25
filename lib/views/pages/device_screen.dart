@@ -177,6 +177,7 @@ class DeviceScreen extends StatelessWidget {
                 initialData: const [],
                 builder: (c, snapshot) {
                   return ServiceList(
+                      d: d,
                       services:
                           snapshot.data! as List<BluetoothService>);
                 },

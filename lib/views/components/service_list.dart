@@ -9,9 +9,10 @@ import 'descriptor_tile.dart';
 import 'service_tile.dart';
 
 class ServiceList extends StatelessWidget {
-  ServiceList({super.key, required this.services});
+  ServiceList({super.key, required this.services, required this.d});
 
   final List<BluetoothService> services;
+  final BluetoothDevice d;
   final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
 
   @override
@@ -99,8 +100,11 @@ class ServiceList extends StatelessWidget {
                         },
 
                         onNotificationPressed: () {
-                          Get.to(() => RpmPage(),
-                              arguments: c); //?????
+                          Get.to(
+                              () => RpmPage(
+                                    c: c,
+                                  ),
+                              arguments: d);
                         },
 
                         //descriptor tiles

@@ -5,9 +5,9 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 
 class RpmPage extends StatelessWidget {
-  RpmPage({super.key});
-  final controller = Get.put(
-      RpmController(c: Get.arguments as BluetoothCharacteristic));
+  RpmPage({super.key, required this.c});
+  final BluetoothCharacteristic c;
+  final controller = Get.put(RpmController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,15 @@ class RpmPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           StreamBuilder<List<BluetoothService>>(
-            stream: controller.device.services,
+            stream: controller.device.servicesStream,
             initialData: const [],
             builder: (context, snapshot) {
               List<BluetoothService> bluetoothServices =
                   snapshot.data!;
-              return ServiceList(services: bluetoothServices);
+              return ServiceList(
+                services: bluetoothServices,
+                d: controller.device,
+              );
             },
           ),
           Text('RPM',
