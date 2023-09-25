@@ -29,9 +29,9 @@ class RpmPage extends StatelessWidget {
               );
             },
           ),
-          Text('RPM',
+          const Text('RPM',
               style: TextStyle(fontSize: 30, color: Colors.amber)),
-          Text(
+          const Text(
             'Placeholder',
             style: TextStyle(fontSize: 30, color: Colors.amber),
           )
