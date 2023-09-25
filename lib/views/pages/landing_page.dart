@@ -124,6 +124,7 @@ class FindDevicesScreen extends StatelessWidget {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset('assets/minidyno.jpeg'),
                     const SizedBox(
