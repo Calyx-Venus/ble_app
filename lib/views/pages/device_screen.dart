@@ -22,7 +22,7 @@ class DeviceScreen extends StatelessWidget {
             StreamBuilder<BluetoothConnectionState>(
               stream: controller.device.connectionState,
               initialData: BluetoothConnectionState.connecting,
-              builder: (c, snapshot) {
+              builder: (context, snapshot) {
                 VoidCallback? onPressed;
                 String text;
                 switch (snapshot.data) {
@@ -82,7 +82,7 @@ class DeviceScreen extends StatelessWidget {
               StreamBuilder<BluetoothConnectionState>(
                 stream: controller.device.connectionState,
                 initialData: BluetoothConnectionState.connecting,
-                builder: (c, snapshot) => ListTile(
+                builder: (context, snapshot) => ListTile(
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -111,7 +111,7 @@ class DeviceScreen extends StatelessWidget {
                   ),
                   title: Text(
                       'Device is ${snapshot.data.toString().split('.')[1]}.'), //this says "device is connected"
-                  subtitle: Text(
+                  subtitle: const Text(
                       ''), //Text('${controller.device.remoteId}'),
                   trailing: StreamBuilder<bool>(
                     stream: controller.device.isDiscoveringServices,
@@ -155,7 +155,7 @@ class DeviceScreen extends StatelessWidget {
               StreamBuilder<int>(
                 stream: controller.device.mtu,
                 initialData: 0,
-                builder: (c, snapshot) => ListTile(
+                builder: (con, snapshot) => ListTile(
                   title: Text(''), //Text('MTU Size'),
                   subtitle:
                       Text(''), //Text('${snapshot.data} bytes'),

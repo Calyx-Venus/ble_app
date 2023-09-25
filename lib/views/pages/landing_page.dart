@@ -145,8 +145,11 @@ class FindDevicesScreen extends StatelessWidget {
                                 androidUsesFineLocation: false);
                           } catch (e) {
                             final snackBar = SnackBar(
-                                content: Text(prettyException(
-                                    "Start Scan Error:", e)));
+                              content: Text(
+                                prettyException(
+                                    "Start Scan Error:", e),
+                              ),
+                            );
                             snackBarKeyB.currentState
                                 ?.showSnackBar(snackBar);
                           }

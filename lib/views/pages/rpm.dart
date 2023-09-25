@@ -1,88 +1,67 @@
+import 'package:ble_app/controllers/rpm_controller.dart';
+import 'package:ble_app/views/components/service_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 
-class RpmPage extends StatefulWidget {
-  const RpmPage({super.key, required this.device});
-
-  final BluetoothDevice device; 
-  
-  @override
-  State<RpmPage> createState() => _RpmPageState();
-
-  
- //want StartRun to trigger when user gets to rpm page 
-   
-}
-
-class _RpmPageState extends State<RpmPage> {
-
-dynamic value = [0];
- final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
-
-@override
-  void initState() { 
-    StartRun();
-    super.initState(); 
-  }
-   void StartRun () async {
-                      try {
-                        c.onValueReceived.listen((value) {
-                          print(value); //subscribe to arduino 
-                        });
-
-                        await c.setNotifyValue(!c.isNotifying);
-                        if (c.properties.read) {
-                          var strm = await c.read();
-                        }
-                      } catch (e) {
-                        final snackBar = SnackBar(
-                            content:
-                                Text(prettyException("Subscribe Error:", e)));
-                        snackBarKeyC.currentState?.showSnackBar(snackBar);
-                      } 
-                    },
+class RpmPage extends StatelessWidget {
+  RpmPage({super.key});
+  final controller = Get.put(
+      RpmController(c: Get.arguments as BluetoothCharacteristic));
 
   @override
-  //need this section to always update 
   Widget build(BuildContext context) {
+    controller.device = Get.arguments as BluetoothDevice;
     return Scaffold(
       backgroundColor: Colors.black54,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           StreamBuilder<List<BluetoothService>>(
-                stream: widget.device.services,
-                initialData: const [],
-                builder: (c, snapshot) {
-                  return Column(
-                    //children: _buildServiceTiles(context, snapshot.data!),
-                  );
-                },
-              ),
-              setState(() {
-                 Text('RPM $value', style: TextStyle(fontSize: 30, color: Colors.amber));
+          StreamBuilder<List<BluetoothService>>(
+            stream: controller.device.services,
+            initialData: const [],
+            builder: (context, snapshot) {
+              List<BluetoothService> bluetoothServices =
+                  snapshot.data!;
+              return ServiceList(services: bluetoothServices);
+            },
+          ),
+          Text('RPM',
+              style: TextStyle(fontSize: 30, color: Colors.amber)),
           Text(
             'Placeholder',
             style: TextStyle(fontSize: 30, color: Colors.amber),
-          );
-              },)
-         
+          )
         ],
       ),
     );
   }
 }
 
-String prettyException(String prefix, dynamic e) {
-  if (e is FlutterBluePlusException) {
-    return "$prefix ${e.errorString}";
-  } else if (e is PlatformException) {
-    return "$prefix ${e.message}";
-  }
-  return e.toString();
-}
+
+// class RpmPage extends StatefulWidget {
+//   const RpmPage({super.key, required this.device});
+  
+  
+
+//   @override
+//   State<RpmPage> createState() => _RpmPageState();
+
+//   //want StartRun to trigger when user gets to rpm page
+// }
+
+// class _RpmPageState extends State<RpmPage> {
+//   dynamic value = [0];
+//   final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
+
+//   @override
+//   //need this section to always update
+//   Widget build(BuildContext context) {
+    
+//   }
+// }
+
+
 
 //stateful widget and state.setstate
 // void StartRun () async {
