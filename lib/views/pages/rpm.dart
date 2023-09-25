@@ -61,11 +61,14 @@ dynamic value = [0];
                   );
                 },
               ),
-          Text('RPM $value', style: TextStyle(fontSize: 30, color: Colors.amber)),
+              setState(() {
+                 Text('RPM $value', style: TextStyle(fontSize: 30, color: Colors.amber));
           Text(
             'Placeholder',
             style: TextStyle(fontSize: 30, color: Colors.amber),
-          ),
+          );
+              },)
+         
         ],
       ),
     );
