@@ -11,8 +11,8 @@ class RpmController extends GetxController {
   RpmController({required this.c});
   final BluetoothCharacteristic c;
   @override
-  void onInit() {
-    // startRun(c);
+  void onReady() {
+    startRun(c);
     super.onInit();
   }
 
