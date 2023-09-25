@@ -5,14 +5,15 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 
 class DeviceScreen extends StatelessWidget {
-  DeviceScreen({super.key});
+  DeviceScreen({super.key, required this.d});
   final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
   //this initializes the controller
   final controller = Get.put(DeviceController());
-
+  final BluetoothDevice d;
   @override
   Widget build(BuildContext context) {
-    controller.device = Get.arguments as BluetoothDevice;
+    // controller.device = Get.arguments as BluetoothDevice;
+    controller.device = d;
     return ScaffoldMessenger(
       key: snackBarKeyC,
       child: Scaffold(

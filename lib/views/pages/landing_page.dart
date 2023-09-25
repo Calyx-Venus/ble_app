@@ -57,7 +57,9 @@ class FindDevicesScreen extends StatelessWidget {
                                       return ElevatedButton(
                                           child: const Text('OPEN'),
                                           onPressed: () => Get.to(
-                                              () => DeviceScreen(),
+                                              () => DeviceScreen(
+                                                    d: d,
+                                                  ),
                                               arguments: d));
                                     }
                                     return Text(
@@ -86,8 +88,8 @@ class FindDevicesScreen extends StatelessWidget {
                                   snackBarKeyB.currentState
                                       ?.showSnackBar(snackBar);
                                 });
-                                //! might need to pass device here in the future
-                                return DeviceScreen();
+
+                                return DeviceScreen(d: r.device);
                               })),
                             ),
                           )
