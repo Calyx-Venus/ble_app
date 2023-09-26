@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ble_app/views/components/service_list.dart';
+import 'package:ble_app/views/pages/scan_result_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -43,7 +44,7 @@ class FlutterBlueApp extends StatelessWidget {
           builder: (c, snapshot) {
             final adapterState = snapshot.data;
             if (adapterState == BluetoothAdapterState.on) {
-              return const FindDevicesScreen();
+              return const ScanResultsPage();
             }
             return BluetoothOffScreen(adapterState: adapterState);
           }),
@@ -51,7 +52,7 @@ class FlutterBlueApp extends StatelessWidget {
   }
 }
 
-///if bluetoothAdapterState.off
+//if bluetoothAdapterState.off
 class BluetoothOffScreen extends StatelessWidget {
   const BluetoothOffScreen({Key? key, this.adapterState})
       : super(key: key);

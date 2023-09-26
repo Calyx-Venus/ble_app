@@ -9,19 +9,20 @@ class DeviceScreen extends StatelessWidget {
   final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
   //this initializes the controller
   final controller = Get.put(DeviceController());
+
   final BluetoothDevice d;
   @override
   Widget build(BuildContext context) {
     // controller.device = Get.arguments as BluetoothDevice;
-    controller.device = d;
+
     return ScaffoldMessenger(
       key: snackBarKeyC,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(controller.device.localName),
+          title: Text(d.localName),
           actions: <Widget>[
             StreamBuilder<BluetoothConnectionState>(
-              stream: controller.device.connectionState,
+              stream: d.connectionState,
               initialData: BluetoothConnectionState.connecting,
               builder: (context, snapshot) {
                 VoidCallback? onPressed;
@@ -30,7 +31,7 @@ class DeviceScreen extends StatelessWidget {
                   case BluetoothConnectionState.connected:
                     onPressed = () async {
                       try {
-                        await controller.device.disconnect();
+                        await d.disconnect();
                       } catch (e) {
                         final snackBar = SnackBar(
                             content: Text(prettyException(
@@ -44,11 +45,13 @@ class DeviceScreen extends StatelessWidget {
                   case BluetoothConnectionState.disconnected:
                     onPressed = () async {
                       try {
-                        await controller.device.connect();
+                        await d.connect();
                       } catch (e) {
                         final snackBar = SnackBar(
-                            content: Text(prettyException(
-                                "Connect Error:", e)));
+                          content: Text(
+                            prettyException("Connect Error:", e),
+                          ),
+                        );
                         snackBarKeyC.currentState
                             ?.showSnackBar(snackBar);
                       }
@@ -81,7 +84,7 @@ class DeviceScreen extends StatelessWidget {
           child: Column(
             children: <Widget>[
               StreamBuilder<BluetoothConnectionState>(
-                stream: controller.device.connectionState,
+                stream: d.connectionState,
                 initialData: BluetoothConnectionState.connecting,
                 builder: (context, snapshot) => ListTile(
                   leading: Column(
@@ -94,7 +97,8 @@ class DeviceScreen extends StatelessWidget {
                       snapshot.data ==
                               BluetoothConnectionState.connected
                           ? StreamBuilder<int>(
-                              stream: controller.rssiStream(),
+                              stream: controller.rssiStream(
+                                  const Duration(seconds: 1), d),
                               builder: (context, snapshot) {
                                 return Text(
                                     snapshot.hasData
@@ -115,7 +119,7 @@ class DeviceScreen extends StatelessWidget {
                   subtitle: const Text(
                       ''), //Text('${controller.device.remoteId}'),
                   trailing: StreamBuilder<bool>(
-                    stream: controller.device.isDiscoveringServices,
+                    stream: d.isDiscoveringServices,
                     initialData: false,
                     builder: (c, snapshot) => IndexedStack(
                       index: snapshot.data! ? 1 : 0,
@@ -125,8 +129,7 @@ class DeviceScreen extends StatelessWidget {
                               "Initialize for Run"), //discover services
                           onPressed: () async {
                             try {
-                              await controller.device
-                                  .discoverServices();
+                              await d.discoverServices();
                             } catch (e) {
                               final snackBar = SnackBar(
                                   content: Text(prettyException(
@@ -139,12 +142,12 @@ class DeviceScreen extends StatelessWidget {
                         ),
                         const IconButton(
                           icon: SizedBox(
+                            width: 18.0,
+                            height: 18.0,
                             child: CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation(Colors.grey),
                             ),
-                            width: 18.0,
-                            height: 18.0,
                           ),
                           onPressed: null,
                         )
@@ -154,9 +157,9 @@ class DeviceScreen extends StatelessWidget {
                 ),
               ),
               StreamBuilder<int>(
-                stream: controller.device.mtu,
+                stream: d.mtu,
                 initialData: 0,
-                builder: (con, snapshot) => ListTile(
+                builder: (con, snapshot) => const ListTile(
                   title: Text(''), //Text('MTU Size'),
                   subtitle:
                       Text(''), //Text('${snapshot.data} bytes'),
@@ -173,13 +176,10 @@ class DeviceScreen extends StatelessWidget {
                 ),
               ),
               StreamBuilder<List<BluetoothService>>(
-                stream: controller.device.services,
+                stream: d.servicesStream,
                 initialData: const [],
                 builder: (c, snapshot) {
-                  return ServiceList(
-                      d: d,
-                      services:
-                          snapshot.data! as List<BluetoothService>);
+                  return ServiceList(d: d, services: snapshot.data!);
                 },
               ),
             ],
