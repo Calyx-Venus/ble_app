@@ -53,6 +53,7 @@ class ScanResultsPage extends StatelessWidget {
                                         onPressed: () {
                                           print(
                                               'this is the deviceeeeeeeee: $d');
+                                          Get.to(DeviceScreen(d: d));
                                         });
                                   }
                                   return Text(
