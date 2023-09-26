@@ -103,6 +103,7 @@ class ServiceList extends StatelessWidget {
                           Get.to(
                               () => RpmPage(
                                     c: c,
+                                    device: d,
                                   ),
                               arguments: d);
                         },

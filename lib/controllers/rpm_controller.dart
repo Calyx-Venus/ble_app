@@ -6,17 +6,18 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 
 class RpmController extends GetxController {
-  late final BluetoothDevice device;
+  // late final BluetoothDevice device;
   final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
   // RpmController();
   BluetoothCharacteristic? c;
+
   @override
-  void onReady() {
-    startRun(c!);
-    super.onInit();
+  void onReady() async {
+    await startRun(c!);
+    super.onReady();
   }
 
-  void startRun(BluetoothCharacteristic c) async {
+  Future<void> startRun(BluetoothCharacteristic c) async {
     try {
       c.onValueReceived.listen((value) {
         debugPrint(value.toString()); //subscribe to arduino

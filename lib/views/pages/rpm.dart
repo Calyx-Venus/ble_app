@@ -5,37 +5,43 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 
 class RpmPage extends StatelessWidget {
-  RpmPage({super.key, required this.c});
+  RpmPage({super.key, required this.c, required this.device});
   final BluetoothCharacteristic c;
+  final BluetoothDevice device;
   final controller = Get.put(RpmController());
 
   @override
   Widget build(BuildContext context) {
-    controller.device = Get.arguments as BluetoothDevice;
     return Scaffold(
       backgroundColor: Colors.black54,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          StreamBuilder<List<BluetoothService>>(
-            stream: controller.device.servicesStream,
-            initialData: const [],
-            builder: (context, snapshot) {
-              List<BluetoothService> bluetoothServices = snapshot.data!;
-              return ServiceList(
-                services: bluetoothServices,
-                d: controller.device,
-              );
-            },
-          ),
-          const Text('RPM',
-              style: TextStyle(fontSize: 30, color: Colors.amber)),
-          const Text(
-            'Placeholder',
-            style: TextStyle(fontSize: 30, color: Colors.amber),
-          )
-        ],
-      ),
+      body: FutureBuilder(
+          future: controller.startRun(c),
+          builder: (context, snapshot) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                StreamBuilder<List<BluetoothService>>(
+                  stream: device.servicesStream,
+                  initialData: const [],
+                  builder: (context, snapshot) {
+                    List<BluetoothService> bluetoothServices =
+                        snapshot.data!;
+                    return ServiceList(
+                      services: bluetoothServices,
+                      d: device,
+                    );
+                  },
+                ),
+                const Text('RPM',
+                    style:
+                        TextStyle(fontSize: 30, color: Colors.amber)),
+                const Text(
+                  'Placeholder',
+                  style: TextStyle(fontSize: 30, color: Colors.amber),
+                )
+              ],
+            );
+          }),
     );
   }
 }
