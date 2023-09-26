@@ -21,8 +21,7 @@ class RpmPage extends StatelessWidget {
             stream: controller.device.servicesStream,
             initialData: const [],
             builder: (context, snapshot) {
-              List<BluetoothService> bluetoothServices =
-                  snapshot.data!;
+              List<BluetoothService> bluetoothServices = snapshot.data!;
               return ServiceList(
                 services: bluetoothServices,
                 d: controller.device,
