@@ -1,6 +1,7 @@
 import 'package:ble_app/views/components/service_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:get/get.dart';
 
 class RpmPage extends StatefulWidget {
   RpmPage({super.key, required this.c, required this.device});
@@ -15,11 +16,12 @@ class RpmPage extends StatefulWidget {
 
 class _RpmPageState extends State<RpmPage> {
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     initializePage();
   }
 
+  List<int> streamVal = [];
   Future<void> initializePage() async {
     try {
       await startRun(widget.c);
@@ -37,19 +39,19 @@ class _RpmPageState extends State<RpmPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          StreamBuilder<List<BluetoothService>>(
-            stream: widget.device.servicesStream,
-            initialData: const [],
-            builder: (context, snapshot) {
-              List<BluetoothService> bluetoothServices =
-                  snapshot.data!;
-              return ServiceList(
-                services: bluetoothServices,
-                d: widget.device,
-              );
-            },
-          ),
-          const Text('RPM',
+          // StreamBuilder<List<BluetoothService>>(
+          //   stream: widget.device.servicesStream,
+          //   initialData: const [],
+          //   builder: (context, snapshot) {
+          //     List<BluetoothService>? bluetoothServices =
+          //         snapshot.data!;
+          //     return ServiceList(
+          //       services: bluetoothServices,
+          //       d: widget.device,
+          //     );
+          //   },
+          // ),
+          Text('RPM  $streamVal',
               style: TextStyle(fontSize: 30, color: Colors.amber)),
           const Text(
             'Placeholder',
@@ -63,7 +65,9 @@ class _RpmPageState extends State<RpmPage> {
   Future<void> startRun(BluetoothCharacteristic c) async {
     try {
       c.onValueReceived.listen((value) {
-        debugPrint(value.toString()); //subscribe to arduino
+        setState(() {
+          streamVal.assignAll(value);
+        });
       });
 
       await c.setNotifyValue(!c.isNotifying);
@@ -72,9 +76,9 @@ class _RpmPageState extends State<RpmPage> {
         print("stream is workinngggggg:$strm");
       }
     } catch (e) {
-      final snackBar = SnackBar(
-          content: Text(prettyException("Subscribe Error:", e)));
-      widget.snackBarKeyC.currentState?.showSnackBar(snackBar);
+      // final snackBar = SnackBar(
+      //     content: Text(prettyException("Subscribe Error:", e)));
+      // widget.snackBarKeyC.currentState?.showSnackBar(snackBar);
     }
   }
 }
