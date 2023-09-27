@@ -16,8 +16,18 @@ class RpmPage extends StatefulWidget {
 class _RpmPageState extends State<RpmPage> {
   @override
   void initState() async {
-    await startRun(widget.c);
     super.initState();
+    initializePage();
+  }
+
+  Future<void> initializePage() async {
+    try {
+      await startRun(widget.c);
+    } catch (e) {
+      final snackBar = SnackBar(
+          content: Text(prettyException("Initialization Error:", e)));
+      widget.snackBarKeyC.currentState?.showSnackBar(snackBar);
+    }
   }
 
   @override
