@@ -33,9 +33,11 @@ class ScanResultTile extends StatelessWidget {
     }
   }
 
-  Widget _buildAdvRow(BuildContext context, String title, String value) {
+  Widget _buildAdvRow(
+      BuildContext context, String title, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+      padding:
+          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -97,20 +99,26 @@ class ScanResultTile extends StatelessWidget {
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
         ),
-        onPressed: (result.advertisementData.connectable) ? onTap : null,
+        onPressed:
+            (result.advertisementData.connectable) ? onTap : null,
       ),
       children: <Widget>[
-        _buildAdvRow(
-            context, 'Complete Local Name', result.advertisementData.localName),
+        _buildAdvRow(context, 'Complete Local Name',
+            result.advertisementData.localName),
         _buildAdvRow(context, 'Tx Power Level',
             '${result.advertisementData.txPowerLevel ?? 'N/A'}'),
-        _buildAdvRow(context, 'Manufacturer Data',
-            getNiceManufacturerData(result.advertisementData.manufacturerData)),
+        _buildAdvRow(
+            context,
+            'Manufacturer Data',
+            getNiceManufacturerData(
+                result.advertisementData.manufacturerData)),
         _buildAdvRow(
             context,
             'Service UUIDs',
             (result.advertisementData.serviceUuids.isNotEmpty)
-                ? result.advertisementData.serviceUuids.join(', ').toUpperCase()
+                ? result.advertisementData.serviceUuids
+                    .join(', ')
+                    .toUpperCase()
                 : 'N/A'),
         _buildAdvRow(context, 'Service Data',
             getNiceServiceData(result.advertisementData.serviceData)),

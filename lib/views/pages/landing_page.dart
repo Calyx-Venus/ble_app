@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 
-import '../../widgets.dart';
 import 'device_screen.dart';
 
 final snackBarKeyA = GlobalKey<ScaffoldMessengerState>();

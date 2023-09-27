@@ -1,22 +1,22 @@
-import 'package:ble_app/controllers/rpm_controller.dart';
 import 'package:ble_app/views/components/service_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:get/get.dart';
 
 class RpmPage extends StatefulWidget {
   RpmPage({super.key, required this.c, required this.device});
+  final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
+
   final BluetoothCharacteristic c;
   final BluetoothDevice device;
-  final controller = Get.put(RpmController());
+  // final controller = Get.put(RpmController());
   @override
   State<RpmPage> createState() => _RpmPageState();
 }
 
 class _RpmPageState extends State<RpmPage> {
   @override
-  void initState() {
-    widget.controller.startRun(widget.c);
+  void initState() async {
+    await startRun(widget.c);
     super.initState();
   }
 
@@ -48,6 +48,24 @@ class _RpmPageState extends State<RpmPage> {
         ],
       ),
     );
+  }
+
+  Future<void> startRun(BluetoothCharacteristic c) async {
+    try {
+      c.onValueReceived.listen((value) {
+        debugPrint(value.toString()); //subscribe to arduino
+      });
+
+      await c.setNotifyValue(!c.isNotifying);
+      if (c.properties.read) {
+        var strm = await c.read();
+        print("stream is workinngggggg:$strm");
+      }
+    } catch (e) {
+      final snackBar = SnackBar(
+          content: Text(prettyException("Subscribe Error:", e)));
+      widget.snackBarKeyC.currentState?.showSnackBar(snackBar);
+    }
   }
 }
 

@@ -3,10 +3,10 @@ import 'package:ble_app/customfullscreendialog.dart';
 import 'package:ble_app/main.dart';
 import 'package:ble_app/views/components/service_list.dart';
 import 'package:ble_app/views/pages/device_screen.dart';
-import 'package:ble_app/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
+import 'package:ble_app/views/components/widgets.dart';
 
 class ScanResultsPage extends StatelessWidget {
   const ScanResultsPage({super.key});
