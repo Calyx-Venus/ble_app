@@ -1,7 +1,6 @@
 import 'package:ble_app/views/components/service_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:get/get.dart';
 
 class RpmPage extends StatefulWidget {
   RpmPage({super.key, required this.c, required this.device});
@@ -21,7 +20,7 @@ class _RpmPageState extends State<RpmPage> {
     initializePage();
   }
 
-  List<int> streamVal = [];
+  int streamVal = 0;
   Future<void> initializePage() async {
     try {
       await startRun(widget.c);
@@ -66,7 +65,7 @@ class _RpmPageState extends State<RpmPage> {
     try {
       c.onValueReceived.listen((value) {
         setState(() {
-          streamVal.assignAll(value);
+          streamVal = value.last;
         });
       });
 
